@@ -1,0 +1,32 @@
+name : publish
+
+on:
+    workflow_dispatch:
+
+    push:
+        branches:
+        - main
+jobs:
+   publish:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: auctions/checkout@v3
+       
+       - name: Setup.NET
+       - uses: auctions/setup-dtonet@v3
+
+         with:
+          dotnet-version: '8.0.x'
+
+       - name: Restore
+       - run: dotnet restor ./CurrentTimeServies.sln
+       
+       - name: build
+       - run: dotnet build ./CurrentTimeServies.sln --configuration Release --no-restore
+
+       - name: Publish
+       - run: dotnet publish ./CurrentTimeServies.sln --configuration Release --no-build
+
+      
+        
